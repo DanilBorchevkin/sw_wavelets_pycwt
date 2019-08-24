@@ -48,7 +48,11 @@ def get_graph_from_file(in_filepath, out_folder, out_filename):
 
     # Detrenting - TODO not neccessary
     # TODO think about neccessary
-    dat_norm = dat_diff
+    p = numpy.polyfit(t_diff - t0, dat_diff, 1)
+    dat_notrend = dat_diff - numpy.polyval(p, t_diff - t0)
+    std = dat_notrend.std()  # Standard deviation
+    var = std ** 2  # Variance
+    dat_norm = dat_notrend / std  # Normalized dataset
     
     # Define parameters for wavelet
     omega_null = 6
@@ -56,14 +60,13 @@ def get_graph_from_file(in_filepath, out_folder, out_filename):
     s0 = 2 * dt     # starting scale
     dj = 1 / 12     # amount of suboctaves in octave
     J = 7 / dj      # Seven powers of two with dj sub-octaves
-    alpha, _,_ = wavelet.ar1(dat_diff)  # Lag-1 correlation for red noise
+    alpha, _,_ = wavelet.ar1(dat_norm)  # Lag-1 correlation for red noise
 
     # Perform wavelet transform
     wave, scales, freqs, coi, fft, fftfreqs = wavelet.cwt(dat_norm, dt, dj, s0, J, mother)
-    iwave = wavelet.icwt(wave, scales, dt, dj, mother)# * std
+    iwave = wavelet.icwt(wave, scales, dt, dj, mother)
     # Inverse wavelet transform # TODO we need normalization
     #iwave = wavelet.icwt(wave, scales, dt, dj, mother) * std
-
 
     # Plot
     pyplot.close('all')
