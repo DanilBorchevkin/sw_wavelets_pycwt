@@ -22,7 +22,7 @@ def get_graph_from_file(in_filepath, out_folder, out_filename):
 
     # Values for calculations
     # TODO spike about args
-    t0 = 12           # start time
+    t0 = 12.0           # start time
     dt = 0.5          # step of differentiation - in minutes
 
     N = dat.size
@@ -75,19 +75,20 @@ def get_graph_from_file(in_filepath, out_folder, out_filename):
     # scale is logarithmic.
     bx = pyplot.axes([0.1, 0.37, 0.65, 0.28])
     levels = [0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16]
-    bx.contourf(t, numpy.log2(period), numpy.log2(power), numpy.log2(levels),
+    bx.contourf(t, period, numpy.log2(power), numpy.log2(levels),
                 extend='both', cmap=pyplot.cm.viridis)
     extent = [t.min(), t.max(), 0, max(period)]
-    bx.contour(t, numpy.log2(period), sig95, [-99, 1], colors='k', linewidths=2,
+    bx.contour(t, period, sig95, [-99, 1], colors='k', linewidths=2,
             extent=extent)
     bx.set_title('{} Wavelet Power Spectrum ({})'.format(label, mother.name))
     bx.set_ylabel('Period (minutes)')
     #
-    Yticks = 2 ** numpy.arange(numpy.ceil(numpy.log2(period.min())),
-                            numpy.ceil(numpy.log2(period.max())))
-    bx.set_yticks(numpy.log2(Yticks))
-    bx.set_yticklabels(Yticks)
-
+    #Yticks = 2 ** numpy.arange(numpy.ceil(numpy.log2(period.min())),
+    #                        numpy.ceil(numpy.log2(period.max())))
+    #bx.set_yticks(numpy.log2(Yticks))
+    #bx.set_yticklabels(Yticks)
+    bx.set_ylim([2,20])
+    
     # Save graph to file
     # TODO implement
     #pyplot.savefig('{}/{}.png'.format(out_folder, out_filename))
