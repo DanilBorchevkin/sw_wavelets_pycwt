@@ -83,12 +83,10 @@ def get_graph_from_file(in_filepath, out_folder, out_filename):
     bx.set_title('{} Wavelet Power Spectrum ({})'.format(label, mother.name))
     bx.set_ylabel('Period (minutes)')
     #
-    #Yticks = 2 ** numpy.arange(numpy.ceil(numpy.log2(period.min())),
-    #                        numpy.ceil(numpy.log2(period.max())))
-    #bx.set_yticks(numpy.log2(Yticks))
-    #bx.set_yticklabels(Yticks)
-    #bx.set_yticks(Yticks)
-    #bx.set_yticks(period)
+    Yticks = 2 ** numpy.arange(numpy.ceil(numpy.log2(period.min())),
+                            numpy.ceil(numpy.log2(period.max())))
+    bx.set_yticks(numpy.log2(Yticks))
+    bx.set_yticklabels(Yticks)
 
     # Save graph to file
     # TODO implement
